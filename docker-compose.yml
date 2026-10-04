@@ -1,0 +1,18 @@
+services:
+  couchdb:
+    image: couchdb:3.5
+    container_name: offline-todo-couchdb
+    restart: unless-stopped
+
+    ports:
+      - "5984:5984"
+
+    environment:
+      COUCHDB_USER: ${COUCHDB_USER}
+      COUCHDB_PASSWORD: ${COUCHDB_PASSWORD}
+
+    volumes:
+      - couchdb-data:/opt/couchdb/data
+
+volumes:
+  couchdb-data:
