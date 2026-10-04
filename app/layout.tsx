@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Offline Todo App",
-  description: "A simple offline todo app",
+  title: "Offline Todo",
+  description: "A modern offline-first Todo application",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
