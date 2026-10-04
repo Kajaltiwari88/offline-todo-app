@@ -4,21 +4,26 @@ export const startSync = async () => {
   const db = await getDB();
 
   const remoteUrl = process.env.NEXT_PUBLIC_COUCHDB_URL;
+  const username = process.env.NEXT_PUBLIC_COUCHDB_USER;
+  const password = process.env.NEXT_PUBLIC_COUCHDB_PASSWORD;
 
-  if (!remoteUrl) {
-    console.error("CouchDB URL is missing");
+  if (!remoteUrl || !username || !password) {
+    console.error("CouchDB configuration is missing");
     return;
   }
 
-  const push = db.replicate.to(remoteUrl, {
+  const options = {
     live: true,
     retry: true,
-  });
+    auth: {
+      username,
+      password,
+    },
+  };
 
-  const pull = db.replicate.from(remoteUrl, {
-    live: true,
-    retry: true,
-  });
+  const push = db.replicate.to(remoteUrl, options);
+
+  const pull = db.replicate.from(remoteUrl, options);
 
   push.on("change", () => {
     console.log("Pushed local data to CouchDB");
